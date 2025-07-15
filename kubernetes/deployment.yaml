@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask
+  template:
+    metadata:
+      labels:
+        app: flask
+    spec:
+      containers:
+      - name: flask
+        image: <DOCKER_HUB_USERNAME>/flask-devops:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: BUGSNAG_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: bugsnag-secret
+              key: BUGSNAG_API_KEY
